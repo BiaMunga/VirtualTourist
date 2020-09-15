@@ -1,8 +1,8 @@
 //
 //  SceneDelegate.swift
-//  VirtualTouristBM
+//  VirtualTourist
 //
-//  Created by Henry Mungalsingh on 09/09/2020.
+//  Created by Henry Mungalsingh on 08/09/2020.
 //  Copyright © 2020 Spared. All rights reserved.
 //
 
@@ -11,13 +11,36 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    
+    var navigationController: UINavigationController?
+    
+    let dataController = DataController(modelName: "VirtualTouristBM")
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        dataController.load()
+        
+        window = UIWindow(windowScene: windowScene)
+        window?.makeKeyAndVisible()
+        
+        let mapController = ViewController()
+        navigationController = UINavigationController(rootViewController: mapController)
+        mapController.dataController = dataController
+        self.window?.rootViewController = navigationController
+        
+//        let navigationController = window?.rootViewController as! UINavigationController
+//        let mapController = navigationController.topViewController as! ViewController
+//        mapController.dataController = dataController
+        
+//        let photoController = PhotoViewController()
+//        self.window?.rootViewController = photoController
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -48,7 +71,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
 
         // Save changes in the application's managed object context when the application transitions to the background.
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
 
 
