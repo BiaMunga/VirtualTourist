@@ -131,23 +131,25 @@ class ViewController: UIViewController {
     
     @objc func mapLongPress(_ recognizer: UIGestureRecognizer) {
 
-          print("A long press has been detected.")
+        
+        
 
           let touchedAt = recognizer.location(in: self.mapView)
           let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView)
-                
+         
+        if recognizer.state == .began {
         let annotation = MKPointAnnotation()
         annotation.coordinate = touchedAtCoordinate
         
         // Update the map with pin
         mapView.addAnnotation(annotation)
+        } else if recognizer.state == .ended {
         
         let newPin = Pins(context: dataController.viewContext)
         newPin.latitude = touchedAtCoordinate.latitude
         newPin.longitude = touchedAtCoordinate.longitude
         
         pinsPlaced.append(newPin)
-//        self.pinChosen = newPin
       
         
         do {
@@ -156,12 +158,7 @@ class ViewController: UIViewController {
         catch {
             
         }
-
-
       }
-    
-    @objc func OKPressed() {
-        
     }
     
 }

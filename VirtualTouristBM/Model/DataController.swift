@@ -17,6 +17,7 @@ class DataController {
         return persistentContainer.viewContext
     }
     
+    
     init(modelName:String) {
         persistentContainer = NSPersistentContainer(name: modelName)
     }

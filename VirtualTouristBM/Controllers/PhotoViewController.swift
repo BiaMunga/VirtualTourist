@@ -59,7 +59,8 @@ class PhotoViewController: UIViewController, MKMapViewDelegate, UICollectionView
         
         self.setPin()
         self.setupFetchedResultsController()
-        self.getFlickrPhotos(latitude: self.latitude, longitude: self.longitude)
+        
+        self.checkForPhotos()
         
     
        }
@@ -78,6 +79,14 @@ class PhotoViewController: UIViewController, MKMapViewDelegate, UICollectionView
         pinPlaced.longitude = self.longitude
         
         mapView.addAnnotation(newPin)
+    }
+    
+    func checkForPhotos() {
+        
+        guard self.fetchedResultContoller.fetchedObjects == nil else { return }
+        
+        self.getFlickrPhotos(latitude: self.latitude, longitude: self.longitude)
+        
     }
     
     
@@ -213,6 +222,7 @@ class PhotoViewController: UIViewController, MKMapViewDelegate, UICollectionView
     func handleGetPhotos(photos: PhotoResponse?, error: Error?) {
     
         var photoURLs: [String] = []
+        FlickrApi.pages = photos?.photos.pages
         
         
      if let photos = photos {
